@@ -20,7 +20,6 @@
       terminal.loadAddon(fitAddon);
       terminal.open(document.getElementById("terminal"));
       fitAddon.fit();
-
       let ws = new WebSocket(`ws://localhost:3000?ip=${ip}&port=${port}`);
 
       ws.onmessage = (event) => {

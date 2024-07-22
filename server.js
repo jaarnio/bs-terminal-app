@@ -9,6 +9,7 @@ const wss = new WebSocket.Server({ noServer: true });
 const url = require("url");
 
 let connections = [];
+let autobootStopEnabled;
 
 app.use(express.static("public"));
 
