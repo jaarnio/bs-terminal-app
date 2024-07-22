@@ -24,6 +24,15 @@ app.get("/connections", (req, res) => {
   });
 });
 
+app.post("/autobootStop", express.json(), (req, res) => {
+  const { enabled } = req.body;
+  if (typeof enabled !== "boolean") {
+    return res.status(400).send("Invalid value. Please send a boolean value.");
+  }
+  autobootStopEnabled = enabled;
+  res.send(`Autoboot stop has been ${enabled ? "enabled" : "disabled"}.`);
+});
+
 wss.on("connection", (ws, req) => {
   //console.log(req);
   const urlParams = new URLSearchParams(url.parse(req.url).query);
@@ -34,7 +43,17 @@ wss.on("connection", (ws, req) => {
   connections.push(connection);
 
   connection.on("data", (data) => {
-    ws.send(data.toString());
+    let str = data.toString();
+    ws.send(str);
+
+    //ws.send(JSON.stringify({ type: "terminal", content: str }));
+    if (
+      autobootStopEnabled &&
+      (str.includes("Hit key to stop autoboot") ||
+        str.includes("Automatic startup in 3 seconds"))
+    ) {
+      connection.write("\x03"); // send CTRL-C
+    }
   });
 
   ws.on("message", (message) => {

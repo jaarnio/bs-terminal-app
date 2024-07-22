@@ -1,0 +1,84 @@
+/* Reset margins and set the body to full height */
+body {
+  margin: 0;
+  height: 100vh;
+  display: flex;
+  flex-direction: column;
+  background-color: rgb(50, 50, 50);
+  font-family: "Lucida Sans", "Lucida Sans Regular", "Lucida Grande",
+    "Lucida Sans Unicode", Geneva, Verdana, sans-serif;
+}
+
+/* Header */
+.header {
+  height: 10%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  color: white;
+  font-size: 40px;
+}
+
+/* Terminal */
+.terminalDiv {
+  height: 80%;
+  padding-left: 5%;
+  padding-right: 5%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  color: white; /* Assuming you want white text for the terminal */
+}
+
+#terminal {
+  height: 100%;
+  width: 100%;
+}
+/* Button Panel */
+.buttonPanel {
+  height: 10%;
+  background-color: #333; /* Dark gray background */
+  display: flex;
+  justify-content: flex-end; /* Adds space between elements */
+  align-items: center;
+  padding-right: 10%;
+}
+
+.buttonPanel button,
+.buttonPanel label {
+  margin: 0 10px; /* Adds margin to separate buttons and labels */
+  color: #fff; /* White text for readability */
+  font-size: 16px;
+}
+
+.buttonPanel button {
+  background-color: #555; /* Slightly lighter gray for buttons */
+  border: none;
+  padding: 10px 20px;
+  border-radius: 5px; /* Rounded corners for a modern look */
+  cursor: pointer; /* Changes cursor to pointer on hover */
+  transition: background-color 0.3s; /* Smooth transition for hover effect */
+}
+
+.buttonPanel button:hover {
+  background-color: #777; /* Lightens button on hover for visual feedback */
+}
+
+.buttonPanel input[type="checkbox"] {
+  margin-right: 5px;
+}
+
+.buttonPanel label {
+  display: flex;
+  align-items: center;
+  color: white;
+}
+.buttonPanel label span {
+  margin-left: 5px; /* Ensures spacing between the checkbox and its label text */
+}
+
+/* Ensures the checkbox is visually integrated and clickable */
+.buttonPanel input[type="checkbox"] + span {
+  cursor: pointer;
+  accent-color: #555; /* Changes the checkbox color */
+}

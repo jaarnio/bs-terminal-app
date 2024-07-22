@@ -6,15 +6,28 @@
     <link rel="stylesheet" href="https://unpkg.com/xterm/css/xterm.css" />
     <script src="https://unpkg.com/xterm"></script>
     <script src="https://unpkg.com/xterm-addon-fit"></script>
+    <link rel="stylesheet" href="./terminal-style.css" />
   </head>
   <body>
-    <div id="terminal"></div>
-    <button onclick="sendCtrlC()">CTRL-C</button>
+    <div id="header" class="header"></div>
+    <div class="terminalDiv">
+      <div id="terminal"></div>
+    </div>
+    <div class="buttonPanel">
+      <button onclick="sendCtrlC()">CTRL-C</button>
+      <label>
+        <input type="checkbox" id="haltAutoBoot" />
+        <span> Halt Auto Boot</span>
+      </label>
+    </div>
+
     <script>
       const urlParams = new URLSearchParams(window.location.search);
       const ip = urlParams.get("ip");
       const port = urlParams.get("port");
-
+      const name = urlParams.get("name");
+      document.title = `${name} - ${port}`;
+      document.getElementById("header").textContent = `${name} [${port}]`;
       let terminal = new Terminal();
       let fitAddon = new FitAddon.FitAddon();
       terminal.loadAddon(fitAddon);
@@ -34,6 +47,22 @@
         console.log("CTRL-C");
         ws.send("\x03\r"); // CTRL-C
       }
+
+      // Listen for changes on the "Halt Auto Boot" checkbox
+      document.getElementById("haltAutoBoot").addEventListener("change", function () {
+        const isChecked = this.checked;
+        // Send the state to the server
+        fetch("/autobootStop", {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify({ enabled: isChecked }),
+        })
+          .then((response) => response.text())
+          .then((data) => console.log(data))
+          .catch((error) => console.error("Error:", error));
+      });
     </script>
   </body>
 </html>

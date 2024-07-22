@@ -15,8 +15,9 @@
           connections.forEach((connection) => {
             const listItem = document.createElement("li");
             const link = document.createElement("a");
-            link.href = `terminal.html?ip=${connection.ip}&port=${connection.port}`;
+            link.href = `terminal.html?ip=${connection.ip}&port=${connection.port}&name=${connection.name}`;
             link.textContent = connection.name;
+            link.target = "_blank";
             listItem.appendChild(link);
             list.appendChild(listItem);
           });
