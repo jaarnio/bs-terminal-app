@@ -1,0 +1,40 @@
+<!-- public/terminal.html -->
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Terminal</title>
+    <link rel="stylesheet" href="https://unpkg.com/xterm/css/xterm.css" />
+    <script src="https://unpkg.com/xterm"></script>
+    <script src="https://unpkg.com/xterm-addon-fit"></script>
+  </head>
+  <body>
+    <div id="terminal"></div>
+    <button onclick="sendCtrlC()">CTRL-C</button>
+    <script>
+      const urlParams = new URLSearchParams(window.location.search);
+      const ip = urlParams.get("ip");
+      const port = urlParams.get("port");
+
+      let terminal = new Terminal();
+      let fitAddon = new FitAddon.FitAddon();
+      terminal.loadAddon(fitAddon);
+      terminal.open(document.getElementById("terminal"));
+      fitAddon.fit();
+
+      let ws = new WebSocket(`ws://localhost:3000?ip=${ip}&port=${port}`);
+
+      ws.onmessage = (event) => {
+        terminal.write(event.data);
+      };
+
+      terminal.onData((data) => {
+        ws.send(data);
+      });
+
+      function sendCtrlC() {
+        console.log("CTRL-C");
+        ws.send("\x03\r"); // CTRL-C
+      }
+    </script>
+  </body>
+</html>

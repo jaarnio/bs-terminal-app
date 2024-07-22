@@ -1,0 +1,27 @@
+<!-- public/index.html -->
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Terminal Connections</title>
+  </head>
+  <body>
+    <h1>Select a Terminal Connection</h1>
+    <ul id="connections-list"></ul>
+    <script>
+      fetch("/connections")
+        .then((response) => response.json())
+        .then((connections) => {
+          const list = document.getElementById("connections-list");
+          connections.forEach((connection) => {
+            const listItem = document.createElement("li");
+            const link = document.createElement("a");
+            link.href = `terminal.html?ip=${connection.ip}&port=${connection.port}`;
+            link.textContent = connection.name;
+            listItem.appendChild(link);
+            list.appendChild(listItem);
+          });
+        })
+        .catch((error) => console.error("Error:", error));
+    </script>
+  </body>
+</html>
